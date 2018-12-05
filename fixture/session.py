@@ -1,5 +1,6 @@
-import time
-
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class SessionHelper:
 
@@ -43,7 +44,9 @@ class SessionHelper:
         # open user settings dropdown
         wd.find_element_by_xpath("//div[3]/div[2]/div").click()
         # click logout button
-        time.sleep(1)
+        WebDriverWait(wd, 3).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[2]/ul/li[3]/a/span"))
+        )
         wd.find_element_by_xpath("//div[2]/ul/li[3]/a/span").click()
 
     def ensure_logout(self):

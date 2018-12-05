@@ -1,5 +1,6 @@
 from selenium import webdriver
 from fixture.session import SessionHelper
+from fixture.project import ETHelper
 
 
 class Application:
@@ -12,8 +13,10 @@ class Application:
             self.wd = webdriver.Opera()
         else:
             raise ValueError("Unrecognized browser %s" % browser)
-        self.wd.implicitly_wait(3)
+        self.wd.implicitly_wait(2)
+        self.wd.set_window_size(1400, 900)
         self.session = SessionHelper(self)
+        self.project = ETHelper(self)
         self.base_url = base_url
 
     def is_valid(self):
