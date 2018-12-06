@@ -1,5 +1,3 @@
-from selenium.webdriver.support.ui import Select
-from model.project import Project
 import random
 
 
@@ -20,11 +18,28 @@ class ETHelper:
         # open traffic column settings
         wd.find_element_by_xpath("//span/span/div").click()
         # select random checkbox
+        wd.find_element_by_xpath("(//input[@type='checkbox'])[2]").click()
+        # save column settings changes
+        wd.find_element_by_xpath("//div[2]/button[2]").click()
+
+    def choose_random_parameter_in_traffic_columns(self):
+        wd = self.app.wd
+        # open traffic column settings
+        wd.find_element_by_xpath("//span/span/div").click()
+        # select random checkbox
         checkbox = random.randint(2, 10)
         wd.find_element_by_xpath("(//input[@type='checkbox'])[%s]" % checkbox).click()
         print(checkbox)
         # save column settings changes
         wd.find_element_by_xpath("//div[2]/button[2]").click()
+
+    def get_column_count(self):
+        wd = self.app.wd
+        l = []
+        for el in wd.find_elements_by_class_name("rt-th-header"):
+            el.text.encode('utf-8')
+            l.append(el)
+        return len(l)
 
 '''
 String
