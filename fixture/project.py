@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import random
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,6 +18,8 @@ class ETHelper:
                 EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, '/projects/%s')]" % project_id))
             )
             wd.find_element_by_xpath("//a[contains(@href, '/projects/%s')]" % project_id).click()
+
+    # Column settings
 
     def choose_shows_in_traffic_columns(self):
         wd = self.app.wd
@@ -46,12 +49,28 @@ class ETHelper:
             l.append(el)
         return len(l)
 
-'''
-String
-metro = "";
-WebElement getMetroStation = driver.findElement(
-    By.xpath("//div[contains (@class, 'dropdown__item')]/span/span[text()='" + metro + "']"));
-((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", getMetroStation);
-getMetroStation.click();
-'''
+    # Filter
+
+    def filter_source_contains(self, source_name):
+        wd = self.app.wd
+        # launch the filter by click plus icon
+        WebDriverWait(wd, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "i.fontello-plus")))
+        wd.find_element_by_css_selector("i.fontello-plus").click()
+        # select filter by source name
+        WebDriverWait(wd, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "form.rt-filterItem > div.ui-goal-select > "
+                                         "div.ui-goal-select-surrogate > div.ui-goal-select-surrogate_value")))
+        wd.find_element_by_css_selector("form.rt-filterItem > div.ui-goal-select > "
+                                         "div.ui-goal-select-surrogate > div.ui-goal-select-surrogate_value").click()
+        WebDriverWait(wd, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.ui-goal-select-option_label")))
+        wd.find_element_by_css_selector("div.ui-goal-select-option_label").click()
+        # select operator 'contains'
+        wd.find_element_by_xpath("//div[3]/div/div[2]/div/i").click()
+        WebDriverWait(wd, 3).until(EC.element_to_be_clickable((By.ID, "react-select-3-option-2")))
+        wd.find_element_by_id("react-select-3-option-2").click()
+        # select source name
+        wd.find_element_by_css_selector("input.rt-filterItem-input.default-text-input.valueInput").send_keys(source_name)
+        # submit filtration
+        WebDriverWait(wd, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#filter-actions > button.rt-blueBtn")))
+        wd.find_element_by_css_selector("#filter-actions > button.rt-blueBtn").click()
+
 
