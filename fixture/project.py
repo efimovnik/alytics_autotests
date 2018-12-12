@@ -1,5 +1,7 @@
 import random
-
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class ETHelper:
 
@@ -11,9 +13,12 @@ class ETHelper:
         app = self.app
         app.open_home_page()
         if not (wd.current_url.endswith("https://testing.alytics.ru/projects/%s?items_on_page=20&page=1"%project_id)):
-            wd.find_element_by_xpath("//a[contains(@href, '/projects/%s')]"%project_id).click()
+            WebDriverWait(wd, 3).until(
+                EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, '/projects/%s')]" % project_id))
+            )
+            wd.find_element_by_xpath("//a[contains(@href, '/projects/%s')]" % project_id).click()
 
-    def choose_parameter_in_traffic_columns(self):
+    def choose_shows_in_traffic_columns(self):
         wd = self.app.wd
         # open traffic column settings
         wd.find_element_by_xpath("//span/span/div").click()
