@@ -3,6 +3,7 @@ import random
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 class ETHelper:
 
@@ -53,6 +54,7 @@ class ETHelper:
 
     def filter_source_contains(self, source_name):
         wd = self.app.wd
+        time.sleep(1)
         # launch the filter by click plus icon
         WebDriverWait(wd, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "i.fontello-plus")))
         wd.find_element_by_css_selector("i.fontello-plus").click()
@@ -72,5 +74,15 @@ class ETHelper:
         # submit filtration
         WebDriverWait(wd, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#filter-actions > button.rt-blueBtn")))
         wd.find_element_by_css_selector("#filter-actions > button.rt-blueBtn").click()
+
+    def get_sources_list(self):
+        wd = self.app.wd
+        sources = []
+        time.sleep(1)
+        for element in wd.find_elements_by_class_name("rt-data-rows"):
+            name = element.find_element_by_tag_name("a").text
+            sources.append(name)
+        return sources
+
 
 
